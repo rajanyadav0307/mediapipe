@@ -24,7 +24,7 @@ public class HandGestureController {
             System.out.println("Hand is Open");
         else
         {
-            System.out.println("Index finger is down");
+            System.out.println("Hand is Closed");
         }
     }
 
