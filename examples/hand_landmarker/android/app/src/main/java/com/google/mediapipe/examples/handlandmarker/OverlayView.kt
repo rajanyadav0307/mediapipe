@@ -101,6 +101,8 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
 
         this.imageHeight = imageHeight
         this.imageWidth = imageWidth
+        m_height = imageHeight
+        m_width = imageWidth
 
         scaleFactor = when (runningMode) {
             RunningMode.IMAGE,
@@ -114,12 +116,15 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
                 max(width * 1f / imageWidth, height * 1f / imageHeight)
             }
         }
+        m_scalefactor = scaleFactor;
         invalidate()
     }
 
     companion object {
         private const val LANDMARK_STROKE_WIDTH = 8F
-
+        lateinit var m_height : Any
+        lateinit var m_width : Any
+        lateinit var m_scalefactor:Any
         // This list defines the lines that are drawn when visualizing the hand landmark detection
         // results. These lines connect:
         // landmarkConnections[2*n] and landmarkConnections[2*n+1]

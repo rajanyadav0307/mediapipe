@@ -46,9 +46,19 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+
+
 class CameraFragment : Fragment(), HandLandmarkerHelper.LandmarkerListener {
 
     companion object {
+        lateinit var x_nav: Any
+        lateinit var y_nav: Any
+        lateinit var x_count:Any
+        lateinit var y_count:Any
+        lateinit var direcyion:Any
+        lateinit var x_navleft:Any
+        lateinit var x_navright:Any
+
         private const val TAG = "Hand Landmarker"
     }
 
@@ -64,6 +74,7 @@ class CameraFragment : Fragment(), HandLandmarkerHelper.LandmarkerListener {
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var cameraFacing = CameraSelector.LENS_FACING_FRONT
+
 
     /** Blocking ML operations are performed using this executor */
     private lateinit var backgroundExecutor: ExecutorService
@@ -296,6 +307,14 @@ class CameraFragment : Fragment(), HandLandmarkerHelper.LandmarkerListener {
 
     // Initialize CameraX, and prepare to bind the camera use cases
     private fun setUpCamera() {
+        x_nav=0.0
+        y_nav=0.0
+        x_count=0
+        y_count=0
+        direcyion = 0
+        x_navleft = 0
+        x_navright = 0
+
         val cameraProviderFuture =
             ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener(
@@ -357,6 +376,7 @@ class CameraFragment : Fragment(), HandLandmarkerHelper.LandmarkerListener {
     }
 
     private fun detectHand(imageProxy: ImageProxy) {
+
         handLandmarkerHelper.detectLiveStream(
             imageProxy = imageProxy,
             isFrontCamera = cameraFacing == CameraSelector.LENS_FACING_FRONT
@@ -381,7 +401,10 @@ class CameraFragment : Fragment(), HandLandmarkerHelper.LandmarkerListener {
                     String.format("%d ms", resultBundle.inferenceTime)
 
                 // Pass necessary information to OverlayView for drawing on the canvas
+
                 HandGestureController.ProcessGestureRecognition(resultBundle.results)
+                //println(resultBundle.inputImageHeight)
+                //println(resultBundle.inputImageWidth)
                 fragmentCameraBinding.overlay.setResults(
                     resultBundle.results.first(),
                     resultBundle.inputImageHeight,
